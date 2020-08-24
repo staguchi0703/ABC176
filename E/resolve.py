@@ -8,14 +8,14 @@ def resolve():
     col = [0 for _ in range(H)]
     row = [0 for _ in range(W)]
 
-    grid = [[0 for _ in range(W+1)] for _ in range(H+1)]
-
+    bomb_set = set()
+    # 配列で要素を作ると要素数が$10^8$超える場合、setで要素の座標を持っておく
 
 
     for i,j in targets:
         col[i] += 1
         row[j] += 1
-        grid[i][j] = 1
+        bomb_set.add((i,j))
 
     max_col = max(col)
     max_row = max(row)
@@ -33,10 +33,12 @@ def resolve():
     res = 0
     for item in max_col_index:
         for jtem in max_row_index:
-            if grid[item][jtem] == 1:
-                res = max(res, max_col + max_row -1)
-            else:
-                res = max(res, max_col + max_row)
+            if (item,jtem) not in bomb_set:
+                # setのin演算子はオーダ1
+                res =max_col + max_row
+                break
+        else:
+            res = max(res, max_col + max_row -1 )
     print(res)
 
 if __name__ == "__main__":
