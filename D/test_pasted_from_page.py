@@ -53,16 +53,16 @@ class TestClass(unittest.TestCase):
 #         output = """0"""
 #         self.assertIO(input, output)
 
-#     def test_入力例_4(self):
-#         input = """4 5
-# 1 2
-# 2 5
-# #.###
-# ####.
-# #..##
-# #..##"""
-#         output = """2"""
-#         self.assertIO(input, output)
+    def test_入力例_4(self):
+        input = """4 5
+1 2
+2 5
+#.###
+####.
+#..##
+#..##"""
+        output = """2"""
+        self.assertIO(input, output)
 
 
 if __name__ == "__main__":
