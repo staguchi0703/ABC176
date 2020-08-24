@@ -2,40 +2,40 @@ def resolve():
     '''
     code here
     '''
-    import collections
+    from collections import deque
 
-    H, W = map(int, input().split())
-    Ch, Cw = map(lambda x: int(x) - 1, input().split())
-    Dh, Dw = map(lambda x: int(x) - 1, input().split())
-    grid = [[item for item in input()] for _ in range(H)]
+    H, W = [int(item) for item in input().split()]
+    Ch, Cw = [int(item)-1 for item in input().split()]
+    Dh, Dw = [int(item)-1 for item in input().split()]
+    grid = [input() for _ in range(H)]
     max_num = 10**6
-    fp = [[max_num for _ in range(W)] for _ in range(H)]
-    
-    que = collections.deque([[Ch, Cw, 0]])
+    fp = [[max_num] * W for _ in range(H)]
+
+    que = deque([[Ch, Cw, 0]])
     fp[Ch][Cw] = 0
-    next_y_x = []
-    for i in range(5):
-        for j in range(5):
-            next_y_x.append([-2 + i, -2 + j])
-    next_y_x.remove([0,0])
+
+    walk = [(0, 1), (0, -1), (-1, 0), (1, 0)]
+    warp = [(i, j) for i in range(-2, 3) for j in range(-2, 3) if (i, j) not in [(0, 0)] + walk]
 
     while que:
         y, x, w_num = que.popleft()
 
-        for dy, dx in next_y_x:
+        for dy, dx in walk:
             ny = y + dy
             nx = x + dx
 
-            if 0 <= ny <= H-1 and 0 <= nx <= W-1:
-                if abs(dy) + abs(dx) == 1:
-                    if grid[ny][nx] == '.' and fp[ny][nx] > w_num:
-                        que.appendleft([ny, nx, w_num])
-                        fp[ny][nx] = w_num
-                else:
-                    nw = w_num +1
-                    if grid[ny][nx] == '.' and fp[ny][nx] > nw:
-                        que.append([ny, nx, nw])
-                        fp[ny][nx] = nw
+            if 0 <= ny <= H-1 and 0 <= nx <= W-1 and grid[ny][nx] == '.' and fp[ny][nx] > w_num:
+                que.appendleft([ny, nx, w_num])
+                fp[ny][nx] = w_num
+
+        for dy, dx in warp:
+            ny = y + dy
+            nx = x + dx
+            nw = w_num +1
+
+            if 0 <= ny <= H-1 and 0 <= nx <= W-1 and grid[ny][nx] == '.' and fp[ny][nx] > nw:
+                que.append([ny, nx, nw])
+                fp[ny][nx] = nw
 
     if fp[Dh][Dw] != max_num:
         print(fp[Dh][Dw])
