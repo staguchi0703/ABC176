@@ -4,9 +4,9 @@ def resolve():
     '''
     import collections
 
-    H, W = [int(item) for item in input().split()]
-    Ch, Cw = [int(item)-1 for item in input().split()]
-    Dh, Dw = [int(item)-1 for item in input().split()]
+    H, W = map(int, input().split())
+    Ch, Cw = map(lambda x: int(x) - 1, input().split())
+    Dh, Dw = map(lambda x: int(x) - 1, input().split())
     grid = [[item for item in input()] for _ in range(H)]
     max_num = 10**6
     fp = [[max_num for _ in range(W)] for _ in range(H)]
